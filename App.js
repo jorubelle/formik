@@ -1,62 +1,68 @@
 import React from "react";
-import ReactDOM from 'react-dom';
+
 // TODO: import useFormik from formik library
 import { Formik, Field, Form } from 'formik'; 
 
 function App() {
   // TODO: add a const called formik assigned to useFormik()
-  const formik = useFormik();
-  const Basic = () => (
-    <div>
-      <h1>Find your perfect pair</h1>
-      <Formik
-        initialValues={{
-          size: '',
-          width: '',
-          stlye: '',
-          color: '',
-        }}
-        onSubmit={async (values) => {
-          await new Promise((r) => setTimeout(r, 500));
-          alert(JSON.stringify(values, null, 2));
-        }}
-      >
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (values) => {
+      alert("Login Successful");
+    },
+    validate: (values) => {
+      let errors = {};
+      if (!values.email) errors.email = "field required";
+      if (!values.password) errors.password = "field required";
+      return errors;
+    },
+  });
 
   return (
     <div>
-      <p>
-        The app is ready! You can proceed with the task instructions. TODO:
-        build you form here.
-      </p>
-      
-    </div>
-    <h1>Find you Perfect pair of shoes!</h1>
-    <div>
-        <label htmlFor="size">Shoe Size</label>
-        <Field id="size" name="size" placeholder="10" />
-    </div>
-    <div>
-          <label htmlFor="width">Foot width?</label>
+      <form onSubmit={formik.handleSubmit}>
+        <div>Email:</div>
+        <input
+          id="emailField"
+          type="text"
+          name="email"
+          onChange={formik.handleChange}
+          value={formik.values.email}
+        />
+        {formik.errors.email ? (
+          <div id="emailError" style={{ color: "red" }}>
+            {formik.errors.email}
           </div>
-          <div>
-          <select htmlFor="width" id="width">
-            <option value="xnarrow">Extra Narrow - B</option>
-            <option value="narrow">Narrow - C</option>
-            <option value="medium">Medium - D</option>
-            <option value="wide">Wide - E</option>
-            <option value="xwide">Extra Wide - EE</option>
-            <option value="uwide">Ultra Wide - EEE</option>
-          </select>
-        </div>
-    <div>
-        <label htmlFor="style">Favorite Style</label>
-        <Field id="style" name="style" placeholder="sneaker"/>
-    </div>
-    <div>
-      <label htmlFor="color">Favorite Color</label>
-      <Field id="color" name="color" placeholder="red">Favorite Color</Field>
+        ) : null}
+        <div>Password:</div>
+        <input 
+          id="pswField"
+          type="text"
+          name="password"
+          onChange={formik.hangleChange}
+          value={formik.values.password}
+          />
+          <br />
+          {formik.errors.password ? (
+             <div id="pswError" style={{ color: red }}>
+               {formik.errors.password}
+             </div>   
+
+          ) : null}
+          <button id="submitBtn" type="submit">
+            Submit
+          </button>
+      </form>
     </div>
   );
 }
+
+ 
+
+
+
 
 export default App;
